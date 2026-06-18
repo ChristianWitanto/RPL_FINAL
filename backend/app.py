@@ -11,13 +11,18 @@ app = Flask(__name__,
 app.secret_key = "kopiko123"
 
 # koneksi database
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="123",
-    database="db_kopiko2"
-)
-
+try:
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="123",
+        database="db_kopiko2"
+    )
+    cursor = db.cursor()
+except Exception as e:
+    print("Database Error:", e)
+    db = None
+    cursor = None
 cursor = db.cursor()
 
 # halaman awal
