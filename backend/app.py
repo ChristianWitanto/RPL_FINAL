@@ -12,9 +12,9 @@ app = Flask(__name__,
 app.secret_key = "kopiko123"
 
 # koneksi database
-b_url = os.getenv("DATABASE_URL")
+db_url = os.getenv("DATABASE_URL")
 
-url = urlparse(b_url)
+url = urlparse(db_url)
 
 db = pymysql.connect(
     host=url.hostname,
@@ -25,6 +25,7 @@ db = pymysql.connect(
 )
 
 cursor = db.cursor()
+
 # halaman awal
 @app.route('/')
 def home():
