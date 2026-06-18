@@ -20,7 +20,7 @@ db = pymysql.connect(
     host="thomas.proxy.rlwy.net",
     user="root",
     password="iyaKOoSRPnaZBSseYNxTcDXOssJQLbzx",
-    database="railway",
+    database="db_kopiko3",
     port=54206
 )
 
