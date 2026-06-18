@@ -1,5 +1,6 @@
 from datetime import date
 
+from django import db
 from flask import Flask, render_template, request,redirect,session, url_for
 import pymysql
 from urllib.parse import urlparse
@@ -17,11 +18,11 @@ db_url = os.getenv("DATABASE_URL")
 url = urlparse(db_url)
 
 db = pymysql.connect(
-    host=url.hostname,
-    user=url.username,
-    password=url.password,
-    database=url.path[1:],
-    port=url.port
+    host="thomas.proxy.rlwy.net",
+    user="root",
+    password="iyaKOoSRPnaZBSseYNxTcDXOssJQLbzx",
+    database="railway",
+    port=54206
 )
 
 cursor = db.cursor()
