@@ -1,7 +1,8 @@
 from datetime import date
 
 from flask import Flask, render_template, request,redirect,session, url_for
-import mysql.connector
+import pymysql
+from urllib.parse import urlparse
 import os
 
 app = Flask(__name__,
@@ -11,20 +12,19 @@ app = Flask(__name__,
 app.secret_key = "kopiko123"
 
 # koneksi database
-try:
-    db = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="123",
-        database="db_kopiko2"
-    )
-    cursor = db.cursor()
-except Exception as e:
-    print("Database Error:", e)
-    db = None
-    cursor = None
-cursor = db.cursor()
+b_url = os.getenv("DATABASE_URL")
 
+url = urlparse(db_url)
+
+db = pymysql.connect(
+    host=url.hostname,
+    user=url.username,
+    password=url.password,
+    database=url.path[1:],
+    port=url.port
+)
+
+cursor = db.cursor()
 # halaman awal
 @app.route('/')
 def home():
