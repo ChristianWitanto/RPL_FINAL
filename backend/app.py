@@ -142,7 +142,7 @@ def owner():
     if session['akses'] != "owner":
         return "Akses ditolak"
 
-    cursor = db.cursor(buffered=True)
+    cursor = db.cursor()
 
     # total transaksi
     cursor.execute("""
@@ -1036,7 +1036,7 @@ def laporan_owner():
     if session['akses'] != "owner":
         return "Akses ditolak"
 
-    cursor = db.cursor(buffered=True)
+    cursor = db.cursor()
 
     cursor.execute("""
         SELECT
@@ -1065,7 +1065,7 @@ def pendapatan_owner():
     if session['akses'] != "owner":
         return "Akses ditolak"
 
-    cursor = db.cursor(buffered=True)
+    cursor = db.cursor()
 
     cursor.execute("""
         SELECT IFNULL(SUM(total),0)
@@ -1087,7 +1087,7 @@ def statistika_owner():
     if session['akses'] != "owner":
         return "Akses ditolak"
 
-    cursor = db.cursor(buffered=True)
+    cursor = db.cursor()
 
     # total transaksi
     cursor.execute("SELECT COUNT(*) FROM transaksi")
@@ -1137,7 +1137,7 @@ def pembelian_owner():
     if session['akses'] != "owner":
         return "Akses ditolak"
 
-    cursor = db.cursor(buffered=True)
+    cursor = db.cursor()
 
     cursor.execute("""
         SELECT *
