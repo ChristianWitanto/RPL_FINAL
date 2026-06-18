@@ -14,7 +14,7 @@ app.secret_key = "kopiko123"
 # koneksi database
 b_url = os.getenv("DATABASE_URL")
 
-url = urlparse(db_url)
+url = urlparse(b_url)
 
 db = pymysql.connect(
     host=url.hostname,
