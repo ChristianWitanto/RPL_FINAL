@@ -869,7 +869,7 @@ def kelola_gudang():
     if session['akses'] != "admin":
         return "Akses ditolak"
     
-    cursor = db.cursor(dictionary=True)
+    cursor = db.cursor(pymysql.cursors.DictCursor)
 
 
     try:
@@ -975,7 +975,7 @@ def update_bahan():
 
 @app.route('/gudang/convert/<int:id_pembelian>')
 def convert_pembelian_ke_gudang(id_pembelian):
-    cursor = db.cursor(dictionary=True)
+    cursor = db.cursor(pymysql.cursors.DictCursor)
     try:
         cursor.execute("SELECT status FROM pembelian WHERE idPembelian = %s", (id_pembelian,))
         pembelian_data = cursor.fetchone()
