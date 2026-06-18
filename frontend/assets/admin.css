@@ -1,0 +1,47 @@
+body{
+            background:#f4f6f9;
+        }
+
+        .navbar-custom{
+            background:white;
+            border-radius:20px;
+            padding:20px 30px;
+        }
+
+        .menu-card{
+            border:none;
+            border-radius:20px;
+            transition:0.3s;
+        }
+
+        .menu-card:hover{
+            transform:translateY(-5px);
+        }
+
+        .menu-icon{
+            font-size:50px;
+            margin-bottom:15px;
+        }
+
+        .stat-card{
+            border:none;
+            border-radius:20px;
+        }
+
+        .stat-number{
+            font-size:40px;
+            font-weight:bold;
+        }
+
+        .table-card{
+            border:none;
+            border-radius:20px;
+        }
+
+        .table thead{
+            background:#ffc107;
+        }
+
+        .table thead th{
+            color:black;
+        }

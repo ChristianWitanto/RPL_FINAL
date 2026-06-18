@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Kelola User</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+
+        <!-- Header -->
+        <div class="card-header d-flex justify-content-between align-items-center">
+
+            <h3 class="mb-0">
+
+                Kelola User
+
+            </h3>
+
+            <a href="/admin"
+               class="btn btn-secondary">
+
+                Kembali
+
+            </a>
+
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+
+
+            <!-- Form tambah -->
+            <form action="/tambah_user"
+                  method="POST">
+
+                <div class="row g-3 mb-4">
+
+
+                    <div class="col-md-4">
+
+                        <input type="text"
+                               name="username"
+                               class="form-control"
+                               placeholder="Username"
+                               required>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <input type="text"
+                               name="password"
+                               class="form-control"
+                               placeholder="Password"
+                               required>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <select name="akses"
+                                class="form-select">
+
+                            <option value="admin">
+
+                                Admin
+
+                            </option>
+
+                            <option value="kasir">
+
+                                Kasir
+
+                            </option>
+
+                            <option value="owner">
+
+                                Owner
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-1">
+
+                        <button type="submit"
+                                class="btn btn-success w-100">
+
+                            +
+
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </form>
+
+            <!-- tabel -->
+            <table class="table table-bordered table-striped">
+
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Akses</th>
+                        <th>Aksi</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for u in users %}
+
+                    <tr>
+
+                        <td>{{ u[0] }}</td>
+
+                        <td>{{ u[1] }}</td>
+
+                        <td>{{ u[2] }}</td>
+
+                        <td>{{ u[3] }}</td>
+
+
+                        <td>
+                            <button
+                                class="btn btn-warning btn-sm"
+                                data-bs-toggle="modal"
+                                 data-bs-target="#edit{{ u[0] }}">
+
+                                Edit
+
+                            </button>
+
+                            <a href="/hapus_user/{{ u[0] }}"
+                               class="btn btn-danger btn-sm">
+
+                                Hapus
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+                    <div class="modal fade"
+                         id="edit{{ u[0] }}">
+
+                        <div class="modal-dialog">
+
+                        <div class="modal-content">
+
+
+                        <form action="/edit_user"
+                        method="POST">
+
+
+                         <div class="modal-header">
+
+                        <h5>
+
+                         Edit User
+
+                         </h5>
+
+                         </div>
+
+                        <div class="modal-body">
+
+
+                        <input type="hidden"
+                           name="idUser"
+                           value="{{ u[0] }}">
+
+                        <div class="mb-3">
+
+                            <label>Username</label>
+
+                            <input type="text"
+                               name="username"
+                               value="{{ u[1] }}"
+                               class="form-control">
+
+                            </div>
+
+                        <div class="mb-3">
+
+                            <label>Password</label>
+
+                            <input type="text"
+                               name="sandi"
+                               value="{{ u[2] }}"
+                               class="form-control">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>Akses</label>
+
+                            <select name="akses"
+                                class="form-select">
+
+                            <option value="admin"
+                                {% if u[3]=='admin' %}
+                                selected
+                                {% endif %}>
+
+                                 Admin
+
+                            </option>
+
+                            <option value="kasir"
+                                {% if u[3]=='kasir' %}
+                                selected
+                                {% endif %}>
+
+                                Kasir
+
+                            </option>
+
+                            <option value="owner"
+                                {% if u[3]=='owner' %}
+                                selected
+                                {% endif %}>
+
+                                Owner
+
+                            </option>
+
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="modal-footer">
+
+                    <button class="btn btn-success">
+
+                        Simpan
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</html>

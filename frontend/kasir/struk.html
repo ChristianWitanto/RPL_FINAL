@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Struk</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/struk.css') }}">
+
+</head>
+
+<body>
+
+<div class="struk">
+
+    <div class="center">
+
+        <h3>CAFE KOPIKO</h3>
+
+        =====================
+
+    </div>
+
+
+    <p>No : {{ transaksi[0] }} </p>
+
+    <p>Tanggal : {{ transaksi[1] }}</p>
+
+
+    <hr>
+
+
+    <table>
+
+        {% for d in detail %}
+
+        <tr>
+            <td colspan="2">
+                {{ d[0] }}
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                {{ d[1] }} x {{ d[2] }} :
+            </td>
+
+            <td class="right">
+                {{ d[3] }}
+            </td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+
+    <hr>
+
+
+    <p>Total : {{ transaksi[2] }}</p>
+
+    <p>Bayar : {{ transaksi[3] }}</p>
+
+    <p>Kembali : {{ transaksi[4] }}</p>
+
+
+    <div class="center">
+
+        Terima Kasih
+
+    </div>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='js/struk.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Owner</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icon -->
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        body{
+            background:#f4f6f9;
+        }
+
+        .navbar-custom{
+            background:white;
+            border-radius:20px;
+            padding:20px 30px;
+        }
+
+        .menu-card{
+            border:none;
+            border-radius:20px;
+            transition:0.3s;
+        }
+
+        .menu-card:hover{
+            transform:translateY(-5px);
+        }
+
+        .menu-icon{
+            font-size:50px;
+            margin-bottom:15px;
+        }
+
+        .stat-card{
+            border:none;
+            border-radius:20px;
+        }
+
+        .stat-number{
+            font-size:40px;
+            font-weight:bold;
+        }
+
+        .table-card{
+            border:none;
+            border-radius:20px;
+        }
+
+        .table thead{
+            background:#ffc107;
+        }
+
+        .table thead th{
+            color:black;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="navbar-custom shadow-sm d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-0">
+                <i class="bi bi-speedometer2"></i>
+                Dashboard Owner
+            </h2>
+        </div>
+
+        <a href="/logout" class="btn btn-danger px-4">
+            <i class="bi bi-box-arrow-right"></i>
+            Logout
+        </a>
+
+    </div>
+
+    <!-- Menu -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm menu-card text-center p-4">
+
+                <div class="menu-icon text-primary">
+                    <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                </div>
+
+                <h5>Laporan</h5>
+
+                <a href="/laporan_owner" class="btn btn-primary mt-3">
+                    Buka
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm menu-card text-center p-4">
+
+                <div class="menu-icon text-success">
+                    <i class="bi bi-cash-stack"></i>
+                </div>
+
+                <h5>Pendapatan</h5>
+
+                <a href="/pendapatan_owner" class="btn btn-success mt-3">
+                    Buka
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm menu-card text-center p-4">
+
+                <div class="menu-icon text-warning">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+
+                <h5>Statistik</h5>
+
+                <a href="/statistika_owner" class="btn btn-warning mt-3">
+                    Buka
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm menu-card text-center p-4">
+
+                <div class="menu-icon text-danger">
+                    <i class="bi bi-cart-fill"></i>
+                </div>
+
+                <h5>Pembelian</h5>
+
+                <a href="/pembelian_owner" class="btn btn-danger mt-3">
+                    Buka
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Statistik -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm stat-card text-center p-4">
+
+                <h5 class="text-muted">
+                    Total Transaksi
+                </h5>
+
+                <div class="stat-number text-primary">
+                    {{ totalTransaksi }}
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm stat-card text-center p-4">
+
+                <h5 class="text-muted">
+                    Total Pendapatan
+                </h5>
+
+                <div class="stat-number text-success">
+                    Rp {{ "{:,.0f}".format(totalPendapatan) }}
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm stat-card text-center p-4">
+
+                <h5 class="text-muted">
+                    Total Pembelian
+                </h5>
+
+                <div class="stat-number text-warning">
+                    {{ totalPembelian }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Laporan -->
+    <div class="card shadow-sm table-card">
+
+        <div class="card-header bg-dark text-white py-3">
+
+            <h4 class="mb-0">
+                <i class="bi bi-table"></i>
+                Laporan Transaksi Terbaru
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="text-center">
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Tanggal</th>
+                            <th>Total</th>
+                            <th>Bayar</th>
+                            <th>Kembalian</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for x in laporan %}
+                        <tr>
+
+                            <td class="text-center">
+                                {{ x[0] }}
+                            </td>
+
+                            <td class="text-center">
+                                {{ x[1] }}
+                            </td>
+
+                            <td class="text-center">
+                                Rp {{ "{:,.0f}".format(x[2]) }}
+                            </td>
+
+                            <td class="text-center">
+                                Rp {{ "{:,.0f}".format(x[3]) }}
+                            </td>
+
+                            <td class="text-center">
+                                Rp {{ "{:,.0f}".format(x[4]) }}
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

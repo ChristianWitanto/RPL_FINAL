@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Gudang & Bahan Baku</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style src="{{ url_for('static', filename='assets/kelola_gudang.css') }}"></style>
+</head>
+
+<body>
+
+    <div class="container mt-4 mb-5">
+
+        <div class="card shadow-sm p-3 mb-4 card-custom bg-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-0 text-dark">Kelola Gudang (Stok Bahan Baku)</h3>
+                </div>
+                <a href="/admin" class="btn btn-secondary">← Kembali</a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-lg-5">
+                <div class="card card-custom p-4 bg-white">
+                    <h5 class="fw-bold text-dark mb-3">Live Stok Bahan Baku</h5>
+                    <form action="{{ url_for('tambah_bahan') }}" method="POST" class="row g-2 mb-4 align-items-end">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label fw-semibold">Nama Bahan</label>
+                            <input type="text" name="namaBahan" class="form-control form-control-sm" required placeholder="Contoh: Kopi"/>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label class="form-label fw-semibold">Stok Awal</label>
+                            <input type="number" step="0.01" min="0" name="stok" class="form-control form-control-sm" value="0" required />
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label class="form-label fw-semibold">Satuan</label>
+                            <select name="satuan" class="form-select form-select-sm" required>
+                                <option value="">Pilih</option>
+                                <option value="Kg">Kg</option>
+                                <option value="Gram">Gram</option>
+                                <option value="Liter">Liter</option>
+                                <option value="Ml">Ml</option>
+                                <option value="Pcs">Pcs</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <button type="submit" class="btn btn-success btn-sm w-100">+</button>
+                        </div>
+                    </form>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nama Bahan</th>
+                                    <th>Total Stok</th>
+                                    <th>Satuan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for b in bahan_baku_list %}
+                                <tr>
+                                    <td class="fw-semibold">{{ b.namaBahan }}</td>
+                                    <td class="fw-bold text-primary">{{ b.stok }}</td>
+                                    <td><span class="badge bg-secondary">{{ b.satuan }}</span></td>
+                                    <td>
+                                        <form action="{{ url_for('update_bahan') }}" method="POST" class="d-flex flex-wrap gap-2 align-items-center mb-0">
+                                            <input type="hidden" name="idBahan" value="{{ b.idBahan }}">
+                                            <div class="input-group input-group-sm me-1" style="width: 110px;">
+                                                <span class="input-group-text">Qty</span>
+                                                <input type="number" step="0.01" min="0" name="qty" value="0" class="form-control" placeholder="0">
+                                            </div>
+                                            <select name="mode" class="form-select form-select-sm me-1" style="width: 130px;">
+                                                <option value="add">Tambah</option>
+                                                <option value="subtract">Kurangi</option>
+                                                <option value="set">Set Stok</option>
+                                            </select>
+                                            <select name="satuan" class="form-select form-select-sm me-1" style="width: 120px;" required>
+                                                <option value="">Pilih</option>
+                                                <option value="Kg" {% if b.satuan == 'Kg' %}selected{% endif %}>Kg</option>
+                                                <option value="Gram" {% if b.satuan == 'Gram' %}selected{% endif %}>Gram</option>
+                                                <option value="Liter" {% if b.satuan == 'Liter' %}selected{% endif %}>Liter</option>
+                                                <option value="Ml" {% if b.satuan == 'Ml' %}selected{% endif %}>Ml</option>
+                                                <option value="Pcs" {% if b.satuan == 'Pcs' %}selected{% endif %}>Pcs</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                                            <button type="submit" name="action" value="delete" class="btn btn-danger btn-sm" onclick="return confirm('Hapus bahan ini dari gudang?')">Hapus</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="card card-custom p-4 bg-white">
+                    <h5 class="text-dark mb-3">Konversi Pembelian Masuk Gudang</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID / Tanggal</th>
+                                    <th>Supplier</th>
+                                    <th>Detail Barang Pembelian</th>
+                                    <th class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for p in pembelian_belum_masuk %}
+                                <tr>
+                                    <td>
+                                        <span class="fw-bold text-dark">#{{ p.idPembelian }}</span><br>
+                                        <small class="text-muted">{{ p.tanggal }}</small>
+                                    </td>
+                                    <td><span class="fw-semibold">{{ p.namaSupplier }}</span></td>
+                                    <td>
+                                        <ul class="list-unstyled mb-0 small">
+                                            {% for barang in p.detail_barang %}
+                                            <li>📌 <strong>{{ barang.namaBahan }}</strong>: {{ barang.jumlah }} {{
+                                                barang.satuan }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{{ url_for('convert_pembelian_ke_gudang', id_pembelian=p.idPembelian) }}"
+                                            class="btn btn-success btn-sm fw-bold px-3"
+                                            onclick="return confirm('Konversi data? Item di dalam nota ini akan menambah stok bahan baku.')">
+                                            ✔ Terima di Gudang
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        <!-- ### Keunggulan Solusi Ini:
+        1. **Aman dari Double-Click:** Jika user sengaja atau tidak sengaja mengklik tombol dua kali dengan cepat,
+        backend akan memeriksa status `converted` di database dan tidak akan memproses ulang.
+        2. **Langsung Hilang:** Begitu pembelian dikonversi, statusnya berubah menjadi `converted` dan sudah tidak akan
+        tampil lagi di daftar pembelian yang menunggu konversi.
+        3. **Tampilan Rapi:** Tag penutup div dan tabel diletakkan secara presisi sehingga daftar konversi tidak duplikat. -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

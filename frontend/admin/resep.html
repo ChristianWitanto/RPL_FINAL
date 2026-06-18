@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Kelola Resep</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container py-5">
+
+    <div class="card shadow border-0 rounded-4">
+
+        <!-- HEADER -->
+        <div class="card-header bg-white border-0 p-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h3 class="fw-bold mb-1">
+                        Kelola Resep
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Produk :
+                        <span class="fw-semibold">
+                            {{ produk[1] }}
+                        </span>
+                    </p>
+
+                </div>
+
+                <a href="/kelola_produk"
+                   class="btn btn-secondary rounded-3">
+
+                    Kembali
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- BODY -->
+        <div class="card-body p-4">
+
+            <!-- FORM -->
+            <div class="card border-0 bg-light rounded-4 mb-4">
+
+                <div class="card-body">
+
+                    <form action="/tambah_resep"
+                          method="POST">
+
+                        <input type="hidden"
+                               name="idProduk"
+                               value="{{ produk[0] }}">
+
+                        <div class="row g-3 align-items-end">
+
+                            <!-- BAHAN -->
+                            <div class="col-md-6">
+
+                                <label class="form-label fw-semibold">
+                                    Pilih Bahan
+                                </label>
+
+                                <select name="idBahan"
+                                        class="form-select"
+                                        required>
+
+                                    {% for b in bahan %}
+
+                                    <option value="{{ b[0] }}">
+                                        {{ b[1] }}
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+
+
+                            <!-- JUMLAH -->
+                            <div class="col-md-4">
+
+                                <label class="form-label fw-semibold">
+                                    Jumlah Pakai
+                                </label>
+
+                                <input type="number"
+                                       step="0.01"
+                                       name="jumlahPakai"
+                                       class="form-control"
+                                       placeholder="Contoh : 5"
+                                       required>
+
+                            </div>
+
+
+
+                            <!-- BUTTON -->
+                            <div class="col-md-2 d-grid">
+
+                                <button class="btn btn-success">
+
+                                    Tambah
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TABEL -->
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle border">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th width="70">No</th>
+                            <th>Bahan</th>
+                            <th width="150">Jumlah</th>
+                            <th width="150">Satuan</th>
+                            <th width="120">Aksi</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% if dataResep %}
+
+                            {% for r in dataResep %}
+
+                            <tr>
+
+                                <td>
+                                    {{ loop.index }}
+                                </td>
+
+                                <td class="fw-semibold">
+                                    {{ r[1] }}
+                                </td>
+
+                                <td>
+                                    {{ r[2] }}
+                                </td>
+
+                                <td>
+                                    {{ r[3] }}
+                                </td>
+
+                                <td>
+
+                                    <a href="/hapus_resep/{{ r[0] }}/{{ produk[0] }}"
+                                       class="btn btn-danger btn-sm">
+
+                                        Hapus
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <tr>
+
+                                <td colspan="5"
+                                    class="text-center text-muted py-4">
+
+                                    Belum ada resep ditambahkan
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

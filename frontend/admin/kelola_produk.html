@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Kelola Produk</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <!-- HEADER -->
+        <div class="card-header d-flex justify-content-between align-items-center">
+
+            <h3 class="mb-0">
+                Kelola Produk
+            </h3>
+
+            <a href="/admin"
+               class="btn btn-secondary">
+
+                Kembali
+
+            </a>
+
+        </div>
+
+
+
+        <div class="card-body">
+
+            <!-- FORM TAMBAH -->
+            <form action="/tambah_produk"
+                  method="POST">
+
+                <div class="row g-3 mb-4">
+
+
+                    <!-- nama -->
+                    <div class="col-md-3">
+
+                        <input type="text"
+                               name="namaProduk"
+                               class="form-control"
+                               placeholder="Nama Produk"
+                               required>
+
+                    </div>
+
+
+
+                    <!-- kategori -->
+                    <div class="col-md-2">
+
+                        <select name="kategori"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+                                Pilih Kategori
+                            </option>
+
+                            <option value="Makanan">
+                                Makanan
+                            </option>
+
+                            <option value="Minuman">
+                                Minuman
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- harga -->
+                    <div class="col-md-2">
+
+                        <input type="number"
+                               name="hargaJual"
+                               class="form-control"
+                               placeholder="Harga Jual"
+                               required>
+
+                    </div>
+
+
+
+                    <!-- satuan -->
+                    <div class="col-md-2">
+
+                        <select name="satuan"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+                                Pilih Satuan
+                            </option>
+
+                            <option value="Porsi">
+                                Porsi
+                            </option>
+
+                            <option value="Cup">
+                                Cup
+                            </option>
+
+                            <option value="Botol">
+                                Botol
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- tipe produk -->
+                    <div class="col-md-2">
+
+                        <select name="tipeProduk"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+                                Tipe Produk
+                            </option>
+
+                            <option value="racikan">
+                                Racikan
+                            </option>
+
+                            <option value="langsung">
+                                Langsung
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- tombol -->
+                    <div class="col-md-1">
+
+                        <button class="btn btn-success w-100">
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+
+
+            <!-- TABEL -->
+            <table class="table table-bordered table-striped align-middle">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Nama Produk</th>
+                        <th>Kategori</th>
+                        <th>Harga</th>
+                        <th>Satuan</th>
+                        <th>Tipe</th>
+                        <th>Aksi</th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <tbody>
+
+                    {% for p in produk %}
+
+                    <tr>
+
+                        <td>{{ p[0] }}</td>
+                        <td>{{ p[1] }}</td>
+                        <td>{{ p[2] }}</td>
+                        <td>Rp {{ p[3] }}</td>
+                        <td>{{ p[4] }}</td>
+                        <td>
+
+                            {% if p[5] == 'racikan' %}
+
+                                <span class="badge bg-warning text-dark">
+                                    Racikan
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-primary">
+                                    Langsung
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <!-- edit -->
+                            <button class="btn btn-warning btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#edit{{ p[0] }}">
+
+                                Edit
+
+                            </button>
+
+
+
+                            <!-- hapus -->
+                            <a href="/hapus_produk/{{ p[0] }}"
+                               class="btn btn-danger btn-sm">
+
+                                Hapus
+
+                            </a>
+
+
+
+                            <!-- resep -->
+                            {% if p[5] == 'racikan' %}
+
+                            <a href="/resep/{{ p[0] }}"
+                               class="btn btn-info btn-sm">
+
+                                Resep
+
+                            </a>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+
+
+                    <!-- MODAL EDIT -->
+                    <div class="modal fade"
+                         id="edit{{ p[0] }}">
+
+                        <div class="modal-dialog">
+
+                            <div class="modal-content">
+
+
+                                <form action="/edit_produk"
+                                      method="POST">
+
+                                    <div class="modal-header">
+
+                                        <h5>
+                                            Edit Produk
+                                        </h5>
+
+                                    </div>
+
+
+
+                                    <div class="modal-body">
+
+                                        <input type="hidden"
+                                               name="idProduk"
+                                               value="{{ p[0] }}">
+
+
+
+                                        <!-- nama -->
+                                        <div class="mb-3">
+
+                                            <label>Nama Produk</label>
+
+                                            <input type="text"
+                                                   name="namaProduk"
+                                                   value="{{ p[1] }}"
+                                                   class="form-control">
+
+                                        </div>
+
+
+
+                                        <!-- kategori -->
+                                        <div class="mb-3">
+
+                                            <label>Kategori</label>
+
+                                            <select name="kategori"
+                                                    class="form-select">
+
+                                                <option value="Makanan"
+                                                {% if p[2] == 'Makanan' %}
+                                                selected
+                                                {% endif %}>
+                                                    Makanan
+                                                </option>
+
+                                                <option value="Minuman"
+                                                {% if p[2] == 'Minuman' %}
+                                                selected
+                                                {% endif %}>
+                                                    Minuman
+                                                </option>
+
+                                            </select>
+
+                                        </div>
+
+
+
+                                        <!-- harga -->
+                                        <div class="mb-3">
+
+                                            <label>Harga</label>
+
+                                            <input type="number"
+                                                   name="hargaJual"
+                                                   value="{{ p[3] }}"
+                                                   class="form-control">
+
+                                        </div>
+
+
+
+                                        <!-- satuan -->
+                                        <div class="mb-3">
+
+                                            <label>Satuan</label>
+
+                                            <select name="satuan"
+                                                    class="form-select">
+
+                                                <option value="Porsi"
+                                                {% if p[4] == 'Porsi' %}
+                                                selected
+                                                {% endif %}>
+                                                    Porsi
+                                                </option>
+
+                                                <option value="Cup"
+                                                {% if p[4] == 'Cup' %}
+                                                selected
+                                                {% endif %}>
+                                                    Cup
+                                                </option>
+
+                                                <option value="Botol"
+                                                {% if p[4] == 'Botol' %}
+                                                selected
+                                                {% endif %}>
+                                                    Botol
+                                                </option>
+
+                                            </select>
+
+                                        </div>
+
+
+
+                                        <!-- tipe -->
+                                        <div class="mb-3">
+
+                                            <label>Tipe Produk</label>
+
+                                            <select name="tipeProduk"
+                                                    class="form-select">
+
+                                                <option value="racikan"
+                                                {% if p[5] == 'racikan' %}
+                                                selected
+                                                {% endif %}>
+                                                    Racikan
+                                                </option>
+
+                                                <option value="langsung"
+                                                {% if p[5] == 'langsung' %}
+                                                selected
+                                                {% endif %}>
+                                                    Langsung
+                                                </option>
+
+                                            </select>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="modal-footer">
+
+                                        <button class="btn btn-success">
+
+                                            Simpan
+
+                                        </button>
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
