@@ -1,6 +1,5 @@
 from datetime import date
 
-from django import db
 from flask import Flask, render_template, request,redirect,session, url_for
 import pymysql
 from urllib.parse import urlparse
